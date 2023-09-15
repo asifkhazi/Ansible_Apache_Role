@@ -1,0 +1,21 @@
+---
+# tasks file for myrole
+- name: Installing apache2 package.
+  apt:
+    name: "{{ apache_package }}"
+    state: present
+    update_cache: yes
+- name: Start the aoache2 service.
+  service:
+    name: "{{ apache_package }}"
+    state: started
+- name: Copy index file to /var/www/html.
+  copy:
+    src: index.html
+    dest: "{{ apache_documentroot }}"
+- name: Add apache configuration setting.
+  template:
+    src: apache.j2
+    dest: "{{ apache_conf }}"
+  notify: restart_apache
+...
